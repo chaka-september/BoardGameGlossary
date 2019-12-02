@@ -53,6 +53,7 @@ class GlossaryFragment : Fragment() {
                         viewModelAdapter?.words = words
                     }
                 })
+                glossaryRecyclerView.scrollToPosition(0)
                 return true
             }
 
@@ -62,6 +63,7 @@ class GlossaryFragment : Fragment() {
                         viewModelAdapter?.words = words
                     }
                 })
+                glossaryRecyclerView.scrollToPosition(0)
                 return true
             }
         })
