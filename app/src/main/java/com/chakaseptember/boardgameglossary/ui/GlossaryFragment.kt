@@ -13,8 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chakaseptember.boardgameglossary.R
 import com.chakaseptember.boardgameglossary.database.Word
-import com.chakaseptember.boardgameglossary.databinding.GlossaryItemBinding
-import com.chakaseptember.boardgameglossary.databinding.MainFragmentBinding
+import com.chakaseptember.boardgameglossary.databinding.FragmentGlossaryBinding
+import com.chakaseptember.boardgameglossary.databinding.ItemGlossaryBinding
+import kotlinx.android.synthetic.main.fragment_glossary.*
 
 class GlossaryFragment : Fragment() {
 
@@ -28,10 +29,7 @@ class GlossaryFragment : Fragment() {
         ).get(GlossaryViewModel::class.java)
     }
 
-    /**
-     * RecyclerView Adapter for converting a list of Video to cards.
-     */
-    private var viewModelAdapter: GlossaryAdapter? = null
+    private lateinit var viewModelAdapter: GlossaryAdapter
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -46,7 +44,7 @@ class GlossaryFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu, menu)
 
-        val searchItem = menu!!.findItem(R.id.action_search)
+        val searchItem = menu.findItem(R.id.action_search)
         val searchView = searchItem.actionView as SearchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String): Boolean {
@@ -90,22 +88,22 @@ class GlossaryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding: MainFragmentBinding = DataBindingUtil.inflate(
+        val binding: FragmentGlossaryBinding = DataBindingUtil.inflate(
             inflater,
-            R.layout.main_fragment,
+            R.layout.fragment_glossary,
             container,
             false
         )
         // Set the lifecycleOwner so DataBinding can observe LiveData
         binding.setLifecycleOwner(viewLifecycleOwner)
 
-        binding.viewModel = viewModel
+        binding.glossaryViewModel = viewModel
 
         setHasOptionsMenu(true)
 
         viewModelAdapter = GlossaryAdapter()
 
-        binding.root.findViewById<RecyclerView>(R.id.recycler_view).apply {
+        binding.root.findViewById<RecyclerView>(R.id.glossaryRecyclerView).apply {
             layoutManager = LinearLayoutManager(context)
             adapter = viewModelAdapter
         }
@@ -154,7 +152,7 @@ class GlossaryAdapter : RecyclerView.Adapter<GlossaryViewHolder>() {
      * an item.
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GlossaryViewHolder {
-        val withDataBinding: GlossaryItemBinding = DataBindingUtil.inflate(
+        val withDataBinding: ItemGlossaryBinding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
             GlossaryViewHolder.LAYOUT,
             parent,
@@ -179,12 +177,12 @@ class GlossaryAdapter : RecyclerView.Adapter<GlossaryViewHolder>() {
 }
 
 /**
- * ViewHolder for DevByte items. All work is done by data binding.
+ * ViewHolder for Glossary items. All work is done by data binding.
  */
-class GlossaryViewHolder(val viewDataBinding: GlossaryItemBinding) :
+class GlossaryViewHolder(val viewDataBinding: ItemGlossaryBinding) :
     RecyclerView.ViewHolder(viewDataBinding.root) {
     companion object {
         @LayoutRes
-        val LAYOUT = R.layout.glossary_item
+        val LAYOUT = R.layout.item_glossary
     }
 }

@@ -26,4 +26,3 @@ fun getWordDatabaseInstance(context: Context): WordDatabase {
     }
     return INSTANCE
 }
-
